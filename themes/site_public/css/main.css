@@ -1,0 +1,409 @@
+/*======================
+PRE STYLES
+======================*/
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+/*Margins*/
+.mt5 {margin-top: 5px;}
+.mt10 {margin-top: 10px;}
+.mt15 {margin-top: 15px;}
+.mt20 {margin-top: 20px;}
+.mt25 {margin-top: 25px;}
+.mb5 {margin-bottom: 5px;}
+.mb10 {margin-bottom: 10px;}
+.mb15 {margin-bottom: 15px;}
+.mb20 {margin-bottom: 20px;}
+.mb25 {margin-bottom: 25px;}
+.ml5 {margin-left: 5px;}
+.ml10 {margin-left: 10px;}
+.ml15 {margin-left: 15px;}
+.ml20 {margin-left: 20px;}
+.ml25 {margin-left: 25px;}
+.mr5 {margin-right: 5px;}
+.mr10 {margin-right: 10px;}
+.mr15 {margin-right: 15px;}
+.mr20 {margin-right: 20px;}
+.mr25 {margin-right: 25px;}
+
+/*Font size*/
+.fz36 {font-size: 36px;}
+
+.no-padding {padding: 0;}
+
+html {
+	height: 100%;
+}
+body {
+	font-size: 14px;
+	font-family: "RobotoRegular", sans-serif;
+	height: 100%;
+	position: relative;
+	background-image: url(../img/body.png);
+	background-repeat: repeat;
+	color: #563F2B;
+}
+a {
+	color: #6D6D6D;
+}
+
+/*======================
+HEADERS && MAIN STYLES
+======================*/
+
+/*HEADER && up_bar*/
+.header .h_up_bar {
+	padding: 10px 0;
+	color: #fff;
+	background-color: #C3A978;
+}
+.header .h_up_bar span {
+	font-size: 16px;
+}
+/*HEADER && head*/
+.header .h_head {
+	padding: 10px 0;
+	background-color: rgba(214,185,130,.5);
+}
+.header .h_head .h_wrapp_faq {
+	text-align: center;
+	width: 70%;
+	margin: 50px auto;
+	font-size: 20px;
+}
+
+/*HEADER && nav_bar*/
+.header .h_nav_bar {
+	background-color: #C3A978;
+	-webkit-box-shadow: 0px 6px 12px rgba(0,0,0,.5);
+	-moz-box-shadow: 0px 6px 12px rgba(0,0,0,.5);
+	-o-box-shadow: 0px 6px 12px rgba(0,0,0,.5);
+	-ms-box-shadow: 0px 6px 12px rgba(0,0,0,.5);
+	box-shadow: 0px 6px 12px rgba(0,0,0,.5);
+}
+.header .h_nav_bar ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.header .h_nav_bar ul li {
+	display: inline-block;
+}
+.header .h_nav_bar ul li a {
+	color: #fff;
+	display: block;
+	padding: 10px 17px 10px;
+	text-decoration: none;
+	position: relative;
+	text-transform: uppercase;
+}
+.header .h_nav_bar ul li a::after {
+	content: '';
+	background-color: #fff;
+	width: 100%;
+	height: 3px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	-webkit-transition: height .3s;
+	-o-transition: height .3s;
+	transition: height .3s;
+}
+.header .h_nav_bar ul li a.about::after {background-color: #E18517;}
+.header .h_nav_bar ul li a.course::after {background-color: #9DC217;}
+.header .h_nav_bar ul li a.articles::after {background-color: #41A2BF;}
+.header .h_nav_bar ul li a.franch::after {background-color: #BF5841;}
+.header .h_nav_bar ul li a.price::after {background-color: #a441bf;}
+.header .h_nav_bar ul li a.faq::after {background-color: #17AFC6;}
+.header .h_nav_bar ul li a.contacts::after {background-color: #41BFB3;}
+.header .h_nav_bar ul li a:hover::after {
+	height: 7px;
+	-webkit-transition: height .3s;
+	-o-transition: height .3s;
+	transition: height .3s;
+}
+.header .h_nav_bar ul li a:hover {
+	background-color: rgba(255,255,255,.1);
+}
+
+
+
+/*======================
+MAIN && MAIN STYLES
+======================*/
+main.main {
+	padding: 25px 0;
+	margin-bottom: 70px;
+	display: block;
+}
+main.main h1,
+main.main h2 {
+	margin: 0 0 15px;
+}
+main.main .page_body {
+	background-color: #DAD5C1;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	border-radius: 10px;
+	padding: 15px 20px;
+	line-height: 1.8;
+	font-size: 15px;
+}
+main.main .page_body p {
+	text-indent: 20px;
+}
+main.main .page_body h2,
+main.main .page_body h3 {
+	margin-top: 30px;
+}
+main.main .page_body a {
+	color: #B5A528;
+	text-decoration: underline;
+}
+#faq ol li {
+	margin-bottom: 25px;
+}
+#faq ol li span {
+	font-weight: bold;
+	font-size: 17px;
+}
+#faq ol li p {
+	margin-left: -15px;
+	margin: 10px 0 10px -15px;
+}
+
+#tariffs ol li {
+	margin-bottom: 25px;
+	border-bottom: 1px dashed #B5A528;
+}
+
+/*======================
+REVIEWS && STYLES
+======================*/
+#reviews .wrapper {
+	margin-bottom: 60px;
+	display: block;
+}
+#reviews .wrapper .body {
+	border: 1px solid #AFA188;
+	background: #E9DDC6;
+	display: block;
+	padding: 10px;
+	margin-bottom: 15px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	position: relative;
+}
+#reviews .wrapper .body::after {
+	content: '';
+	position: absolute;
+	bottom: -15px;
+	left: 70%;
+	display: block;
+	border-top: 15px solid #AFA188;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+}
+#reviews .wrapper .name span {
+	float: right;
+	font-weight: bold;
+}
+
+
+/*======================
+SIDEBAER && NAV
+======================*/
+aside.sidebar {
+	padding: 25px 0;
+	margin-bottom: 70px;
+}
+aside.sidebar ul.sidebar_menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+aside.sidebar ul.sidebar_menu li {
+	margin-bottom: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	border-radius: 10px;
+}
+
+/* COLORS */
+aside.sidebar ul.sidebar_menu li.one {
+	background-color: #41A2BF;
+}
+aside.sidebar ul.sidebar_menu li.two {
+	background-color: #4CC723;
+}
+aside.sidebar ul.sidebar_menu li.three {
+	background-color: #CCA20C;
+}
+aside.sidebar ul.sidebar_menu li.four {
+	background-color: #9A4AE2;
+}
+aside.sidebar ul.sidebar_menu li.five {
+	background-color: #4A95E2;
+}
+aside.sidebar ul.sidebar_menu li.six {
+	background-color: #E24A4A;
+}
+aside.sidebar ul.sidebar_menu li.seven {
+	background-color: #23C78A;
+}
+aside.sidebar ul.sidebar_menu li.eight   {
+	background-color: #20B725;
+}
+aside.sidebar ul.sidebar_menu li.nine {
+	background-color: #756A32;
+}
+aside.sidebar ul.sidebar_menu li.ten {
+	background-color: #20B725;
+}
+
+aside.sidebar ul.sidebar_menu li.one:hover,
+aside.sidebar ul.sidebar_menu li.two:hover,
+aside.sidebar ul.sidebar_menu li.three:hover,
+aside.sidebar ul.sidebar_menu li.four:hover,
+aside.sidebar ul.sidebar_menu li.five:hover,
+aside.sidebar ul.sidebar_menu li.six:hover,
+aside.sidebar ul.sidebar_menu li.seven:hover,
+aside.sidebar ul.sidebar_menu li.eight:hover,
+aside.sidebar ul.sidebar_menu li.nine:hover,
+aside.sidebar ul.sidebar_menu li.ten:hover
+ {
+	opacity: .8;
+	-webkit-transition: all .2s;
+	-o-transition: all .2s;
+	transition: all .2s;
+}
+/* END COLORS */
+
+aside.sidebar ul.sidebar_menu li:nth-child(2) .wrapp .info,
+aside.sidebar ul.sidebar_menu li:nth-child(3) .wrapp .info,
+aside.sidebar ul.sidebar_menu li:nth-child(4) .wrapp .info,
+aside.sidebar ul.sidebar_menu li:nth-child(5) .wrapp .info,
+aside.sidebar ul.sidebar_menu li:nth-child(6) .wrapp .info,
+aside.sidebar ul.sidebar_menu li:nth-child(8) .wrapp .info,
+aside.sidebar ul.sidebar_menu li:nth-child(9) .wrapp .info {
+	line-height: 43px;
+}
+
+aside.sidebar ul.sidebar_menu li .wrapp {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 90px;
+	color: #fff;	
+}
+aside.sidebar ul.sidebar_menu li .wrapp .info {
+	width: 70%;
+	display: block;
+	height: 100%;
+	float: left;
+	padding: 23px 20px;
+	font-size: 22px;
+	line-height: 22px;
+}
+aside.sidebar ul.sidebar_menu li .wrapp .pictures {
+	width: 30%;
+	height: 100%;
+	overflow: hidden;
+	display: block;
+	float: left;
+	padding: 5px;
+}
+aside.sidebar ul.sidebar_menu li .wrapp .pictures img {
+	height: 100%;
+}
+
+/*======================
+FOOTER && MAIN STYLES
+======================*/
+.footer {
+	background-color: #C3A978;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	padding: 25px 0;
+	color: #fff;
+}
+
+/*======================
+BREADCRUMB && MAIN STYLES
+======================*/
+section.breadcrumb {
+	background-color: transparent;
+	margin-bottom: 0;
+	margin-top: 15px;
+}
+section.breadcrumb .wrapp {
+	background-color: #DAD5C1;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	border-radius: 10px;
+	overflow: hidden;
+	padding: 10px 20px;
+	font-size: 11px;
+}
+section.breadcrumb .wrapp ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+section.breadcrumb .wrapp ul li {
+	display: inline-block;
+}
+section.breadcrumb .wrapp ul li i {
+	margin-right: 5px;
+}
+
+
+/*======================
+SECTION && FREE LESSON
+======================*/
+section.free_lesson .wrapp_lesson {
+	background-color: #DAD5C1;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+section.free_lesson .wrapp_lesson img {}
+section.free_lesson .wrapp_lesson .info {
+	font-size: 17px;
+	padding: 15px 20px 15px;
+
+}
+section.free_lesson .wrapp_lesson .info a {
+	text-align: center;
+}
+
+
+/*======================
+MODAL && FORMS
+======================*/
+.h_faq_form {
+	background-color: #D6B982;
+	display: none;
+	padding: 20px 30px;
+	border-radius: 10px;
+	width: 100%;
+	top: 80%;
+}
+.btn-blue {
+	background-color: #45ABEA;
+	color: #fff;
+}
+.btn-blue:hover,
+.btn-blue:active {
+	background-color: #3991C8;
+	color: #fff;
+}
