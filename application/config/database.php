@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = 'astral.beget.ru';
 $db['default']['username'] = 'zaicev0r_obrain';
 $db['default']['password'] = '60DDu3XT';
 $db['default']['database'] = 'zaicev0r_obrain';
