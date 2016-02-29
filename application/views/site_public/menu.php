@@ -53,14 +53,11 @@
                 <div class="col-md-12">
 
                     <ul>
-                        <li><a href="index.html" class="about">Главная</a></li>
-                        <li><a href="#" class="price">О компании</a></li>
-                        <li><a href="#" class="course">Наши курсы</a></li>
-                        <li><a href="tariffs.html" class="price">Тарифы</a></li>
-                        <li><a href="faq.html" class="articles">Часто задаваемы вопросы</a></li>
-                        <li><a href="reviews.html" class="faq">Отзывы</a></li>
-                        <li><a href="#" class="franch">Франчайзинг</a></li>
-                        <li><a href="contacts.html" class="contacts">Контакты</a></li>
+                    <?php if (!empty($this->main_menu)): ?>
+                    <?php foreach ($this->main_menu as $category): ?>
+                       <li><a href="<?php if (preg_match("/http[s]*:\/\//", $category['link'])) { echo $category['link']; } else { echo base_url() . $category['link']; } ?>" <?php if (preg_match("/http[s]*:\/\//", $category['link'])) { echo 'target="_blank"'; } ; ?> class="<?php echo $category['class']; ?>"><?php echo $category['title']; ?></a></li>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
                     </ul>
 
                 </div>

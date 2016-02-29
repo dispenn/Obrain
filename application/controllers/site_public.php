@@ -7,18 +7,10 @@ class Site_public extends CI_Controller {
          
         $this->contacts = new stdClass();
 		$this->contacts = $this->basic_functions_model->select(array('table' => 'contact_info', 'type' => 'list', 'where_field' => 'id', 'where' => 1));
-        $this->contacts = $this->contacts[0];  
-        
-        $this->departments = new stdClass();
-		$this->departments = $this->basic_functions_model->select(array('table' => 'departments', 'type' => 'list'));
-    
-        $this->last_news = new stdClass();
-        $this->last_news = $this->public_model->select_last_news(3);
-        if (!empty($this->last_news)) {
-            foreach ($this->last_news as $key => $value) {
-                $this->last_news[$key]['date'] = $this->rdate("d M, Y", $this->last_news[$key]['date']);
-            }
-        }
+        $this->contacts = $this->contacts[0];
+
+        $this->main_menu = new stdClass();
+        $this->main_menu = $this->basic_functions_model->select(array('table' => 'main_menu', 'type' => 'list', 'sort_with_null' => TRUE, 'sort' => 'position', 'type_sort' => 'asc'));
     }
 
 //Вход пользователя
@@ -234,7 +226,7 @@ class Site_public extends CI_Controller {
 					'insert_batch' => FALSE,
 					'insert_id' => TRUE
 				 );
-                 
+
                 $form['category'] = 2;
 				$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
                 
@@ -243,12 +235,6 @@ class Site_public extends CI_Controller {
                 
                 $this->email->subject('Отправлен новый вопрос');
                 $text_message = "\n\nФИО: " . $form['name'];
-                if ($form['company']) {
-                    $text_message .= "\nКомпания: " . $form['company'];
-                }
-                if ($form['phone']) {
-                    $text_message .= "\nТелефон: " . $form['phone'];
-                }
                 if ($form['email']) {
                     $text_message .= "\nE-mail: " . $form['email'];
                 }

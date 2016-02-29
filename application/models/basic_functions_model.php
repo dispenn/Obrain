@@ -90,7 +90,11 @@ class Basic_functions_model extends CI_Model {
                 $where .= " AND `".$config['and_where_field']."` ".$config['and_compare']." '".$config['and_where']."'";
             }
             if (isset($config['sort'])) {
-                $sort = "ORDER BY ".$config['sort']." ".$config['type_sort'];
+                if (isset($config['sort_with_null']) && $config['sort_with_null'] == TRUE) {
+                    $sort = "ORDER BY CASE WHEN ".$config['sort']." = '0' THEN '65535' END, ".$config['sort']." ".$config['type_sort'];
+                } else {
+                    $sort = "ORDER BY ".$config['sort']." ".$config['type_sort'];
+                }
             }
             $query = $this->db->query("SELECT * FROM `".$config['table']."` ".$condition." ".$where." ".$sort." ");
             if ($query->row_array() > 0) {
