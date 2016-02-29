@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="logo">
-                        <a href="index.html" title="Obrain. Центр развития интеллекта."><img src="<?php echo '/themes/site_public/'; ?>img/logo.png" alt="Logo"></a>
+                        <a href="<?php echo base_url(); ?>" title="Obrain. Центр развития интеллекта."><img src="<?php echo '/themes/site_public/'; ?>img/logo.png" alt="Logo"></a>
                     </div>
                 </div>
                 <div class="col-md-6">

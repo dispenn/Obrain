@@ -41,6 +41,11 @@
 $route['default_controller'] = "site_public/index";
 $route['404_override']  = '';
 $route['contacts']      = 'site_public/contacts';
+$route['reviews']      = 'site_public/reviews';
+
+$route['page']        			    = 'site_public/page';
+$route['page/(:any)'] 			    = 'site_public/page/$1';
+
 $route['department']      = 'site_public/department';
 $route['department/(:any)'] = 'site_public/department/$1';
 $route['news']      = 'site_public/news';

@@ -53,6 +53,22 @@
 
                     <ul class="sidebar_menu">
 
+                    <?php if (!empty($right_menu)): ?>
+                    <?php foreach ($right_menu as $category): ?>
+                            <li class="<?php echo $category['class']; ?>">
+                                <a href="<?php echo base_url() . $category['link']; ?>">
+                                    <div class="wrapp">
+                                        <div class="info">
+                                            <span><?php echo $category['title']; ?></span>
+                                        </div>
+                                        <div class="pictures">
+                                            <img src="<?php echo base_url() . substr($category['path'], 1); ?>" alt="">
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
                         <li class="one">
                             <a href="mental_arithmetic.html">
                                 <div class="wrapp">
@@ -150,7 +166,7 @@
                             </a>
                         </li>
                         <li class="nine">
-                            <a href="news.html">
+                            <a href="<?php echo base_url() . 'news'; ?>">
                                 <div class="wrapp">
                                     <div class="info">
                                         <span>Новости</span>

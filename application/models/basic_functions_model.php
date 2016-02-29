@@ -138,10 +138,17 @@ class Basic_functions_model extends CI_Model {
                 $where .= " AND `".$config['and_where_field']."` ".$config['and_compare']." '".$config['and_where']."'";
             }
             if (isset($config['sort'])) {
-                $sort = "ORDER BY ".$config['sort']." ".$config['type_sort'];
+                if (isset($config['sort_with_null']) && $config['sort_with_null'] == TRUE) {
+                    $sort = "ORDER BY CASE WHEN ".$config['sort']." = '0' THEN '65535' END, ".$config['sort']." ".$config['type_sort'];
+                } else {
+                    $sort = "ORDER BY ".$config['sort']." ".$config['type_sort'];
+                }
             }
-            if (isset($page_limit)) {
-                $condition = 'LIMIT '.$page_limit;
+            if (isset($page_limit) && isset($page_offset)) {
+                if ($page_offset == NULL) {
+                    $page_offset = 0;
+                }
+                $condition = 'LIMIT '.$page_offset.', '.$page_limit;
             }
             // SUBSTRING обрезает точку в начале пути
             $query = $this->db->query("SELECT `".$config['table']."`.*, SUBSTRING(`all_files`.`path`,2) AS `path`,  SUBSTRING(`all_files`.`thumb`,2) AS `thumb` FROM `".$config['table']."` LEFT JOIN `all_files` ON `all_files`.`id`=`".$config['table']."`.`".$config['image_field']."` ".$where." ".$sort." ".$condition);
