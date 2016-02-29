@@ -1,0 +1,18 @@
+﻿User-agent: *
+Allow: /
+Disallow: /administrator/
+Disallow: /crm/
+Disallow: /cgi-bin
+Disallow: /login
+Disallow: /shop_cart
+Disallow: /registration
+Disallow: /catalog/kompozitnye-ballony/shop-product-sidebar.html
+Allow: /uploads
+Host: xn--55-1lcdoabe2a.xn--p1ai
+Sitemap: http://xn--55-1lcdoabe2a.xn--p1ai/sitemap.xml
+
+User-agent: YandexImages
+Allow: /uploads
+
+User-agent: Googlebot-Image
+Allow: /uploads

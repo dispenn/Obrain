@@ -1,0 +1,12 @@
+AddDefaultCharset UTF-8
+RewriteEngine on
+RewriteCond $1 !^(index\.php|1\.zip|themes|uploads|images|ckeditor|robots\.txt|sitemap\.xml|maps\.kml|job\.xml|w1_184528734086\.txt)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+
+RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /index\.php
+RewriteRule .* / [R=301,L]
+
+Options +FollowSymLinks
+
+RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]

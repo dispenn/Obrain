@@ -1,0 +1,4 @@
+.tr-ingredient-products:hover {
+    cursor: pointer;
+    background-color: rgba(216, 236, 236, 0.45);
+}
