@@ -160,23 +160,15 @@
                             <?php if ($this->ion_auth->is_admin()):?>
                                 <li class="treeview active">
                                     <a href="#">
-                                        <i class="fa fa-suitcase"></i> <span>Блоки</span>
+                                        <i class="fa fa-suitcase"></i> <span>Разделы</span>
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </a>
                                     <ul class="treeview-menu">
-                                      <li><a href="<?=base_url('administrator/about')?>"><i class="fa fa-angle-double-right"></i> О компании</a></li>        
-                                      <li><a href="<?=base_url('administrator/main_images')?>"><i class="fa fa-angle-double-right"></i> Изображения для сайта</a></li>    
-                                      <li><a href="<?=base_url('administrator/promos')?>"><i class="fa fa-angle-double-right"></i> Акции</a></li>      
-                                      <li><a href="<?=base_url('administrator/banners')?>"><i class="fa fa-angle-double-right"></i> Баннеры</a></li>      
-                                      <li><a href="<?=base_url('administrator/contact_info')?>"><i class="fa fa-angle-double-right"></i> Контактная информация</a></li>
-                                      <li><a href="<?=base_url('administrator/news')?>"><i class="fa fa-angle-double-right"></i> Новости</a></li> 
-                                      <li><a href="<?=base_url('administrator/catalog')?>"><i class="fa fa-angle-double-right"></i> Продукция</a></li> 
-                                      <li><a href="<?=base_url('administrator/create_category_catalog')?>"><i class="fa fa-angle-double-right"></i> Категории продукции</a></li> 
-                                      <li><a href="<?=base_url('administrator/articles')?>"><i class="fa fa-angle-double-right"></i> Публикации</a></li> 
-                                      <li><a href="<?=base_url('administrator/employees')?>"><i class="fa fa-angle-double-right"></i> Сотрудники</a></li> 
-                                      <li><a href="<?=base_url('administrator/vacancy')?>"><i class="fa fa-angle-double-right"></i> Вакансии</a></li> 
-                                      <li><a href="<?=base_url('administrator/gallery')?>"><i class="fa fa-angle-double-right"></i> Фотоархив</a></li> 
-                                      <li><a href="<?=base_url('administrator/anketa')?>"><i class="fa fa-angle-double-right"></i> Анкета</a></li>                
+                                        <li><a href="<?=base_url('administrator/pages')?>"><i class="fa fa-angle-double-right"></i> Статические страницы</a></li>
+                                        <li><a href="<?=base_url('administrator/main_menu')?>"><i class="fa fa-angle-double-right"></i> Главное меню</a></li>
+                                        <li><a href="<?=base_url('administrator/right_menu')?>"><i class="fa fa-angle-double-right"></i> Боковое меню</a></li>
+                                        <li><a href="<?=base_url('administrator/contact_info')?>"><i class="fa fa-angle-double-right"></i> Контактная информация</a></li>
+                                        <li><a href="<?=base_url('administrator/news')?>"><i class="fa fa-angle-double-right"></i> Новости</a></li>
                                     </ul>   
                                 </li>
                                 <li class="treeview">
@@ -185,11 +177,9 @@
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </a>
                                     <ul class="treeview-menu">
-                                        <li><a href="<?=base_url('administrator/form_questions')?>"><i class="fa fa-angle-double-right"></i> Вопросы</a></li>      
-                                        <li><a href="<?=base_url('administrator/form_sub')?>"><i class="fa fa-angle-double-right"></i> Подписки</a></li>  
+
                                     </ul>   
                                 </li>
-                                <li><a href="<?=base_url('administrator/moderation') ?>"><i class="fa fa-camera-retro"></i> <span>Конкурс</span></a></li>
                                 <li><a href="<?=base_url('autorization/index')?>"><i class="fa fa-user"></i> <span>Пользователи</span></a></li>
                             <?php endif?>
                             
