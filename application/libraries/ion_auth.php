@@ -499,6 +499,7 @@ class Ion_auth
 			}
 			$this->_cache_user_in_group[$id] = $groups_array;
 		}
+
 		foreach ($check_group as $key => $value)
 		{
 			$groups = (is_string($value)) ? $groups_array : array_keys($groups_array);

@@ -16,7 +16,35 @@ class Rules_model extends CI_Model {
 			'rules'   => 'trim|max_length[255]|xss_clean'
 			)
 	);
-    
+
+	public $pages_rules = array(
+		array(
+			'field'   => 'form[title]',
+			'label'   => 'Заголовок',
+			'rules'   => 'trim|required|max_length[255]|xss_clean'
+		),
+		array(
+			'field'   => 'form[access]',
+			'label'   => 'Статус',
+			'rules'   => 'trim|required|xss_clean'
+		),
+		array(
+			'field'   => 'form[metakey]',
+			'label'   => 'Ключевые слова',
+			'rules'   => 'trim|max_length[200]|xss_clean'
+		),
+		array(
+			'field'   => 'form[metadesc]',
+			'label'   => 'Описание',
+			'rules'   => 'trim|max_length[200]|xss_clean'
+		),
+		array(
+			'field'   => 'form[fulltext]',
+			'label'   => 'Текст страницы',
+			'rules'   => 'trim|required'
+		)
+	);
+
     public $department_rules = array(
 		array(
 			'field'   => 'form[title]',

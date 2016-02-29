@@ -60,7 +60,7 @@ $route['autorization']  = 'autorization';
 $route['administrator'] = 'administrator/index';
 
 $route['logout']        = 'autorization/logout';
-$route['login']         = 'site_public/login';
+$route['login']         = 'autorization/login';
 
 $route['forgot_password']        = 'site_public/forgot_password';
 $route['reset_password'] = 'site_public/reset_password';
