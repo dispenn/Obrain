@@ -52,7 +52,10 @@ class Administrator extends CI_Controller {
 		if ($this->form_validation->run() === FALSE) {
 			$list = $this->basic_functions_model->select(array('table' => 'page_content', 'type' => 'list'));
 			$form = $this->input->post('form');
-			if (empty($form['alias'])) {
+			if (!empty($form['alias'])) {
+				$form['alias'] = str_replace(array('\'','"',' ','.',',','*','/','!','?', '—'), '-', $form['alias']);
+				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['alias']);
+			} else {
 				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['title']);
 			}
 			$this->load->view('admin_panel/header', array('menu' => $this->menu));
@@ -60,7 +63,10 @@ class Administrator extends CI_Controller {
 			$this->load->view('admin_panel/footer');
 		} else {
 			$form = $this->input->post('form');
-			if (empty($form['alias'])) {
+			if (!empty($form['alias'])) {
+				$form['alias'] = str_replace(array('\'','"',' ','.',',','*','/','!','?', '—'), '-', $form['alias']);
+				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['alias']);
+			} else {
 				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['title']);
 			}
 			if (is_array($form) && !empty($form)) {
@@ -94,6 +100,7 @@ class Administrator extends CI_Controller {
 			$this->load->view('admin_panel/footer');
 		} elseif (is_numeric($id) && isset($_POST['form'])) {
 			$this->form_validation->set_rules($this->rules_model->pages_rules);
+			$this->form_validation->set_rules('form[alias]', 'alias', 'trim|required|xss_clean|callback__alias_exist_check[page_content.alias.edit.'.$id.']');
 			if ($this->form_validation->run() === FALSE) {
 				$form = $this->input->post('form');
 
