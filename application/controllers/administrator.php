@@ -14,158 +14,6 @@ class Administrator extends CI_Controller {
 	}
 
 /*
-    парсер
-*/
-/*
-    public function parser() {
-        $html_text = file_get_contents("http://www.solfi.ru/news.html?task=show&params=y2015t1p1.html");
-        $html_text = iconv('windows-1251', 'UTF-8', $html_text);
-        $html_text = str_replace("images/news", "http://www.solfi.ru/images/news", $html_text);
-        $html_text = str_replace("news.html?", "http://www.solfi.ru/news.html?", $html_text);
-        
-        
-        //$news = $this->find($html_text, "<table width=\"100%\" border=\"0\" cellpadding=\"10\" cellspacing=\"0\" style=\"border-bottom:dashed 1px #054B9D;\">", "</table>");
-        
-        //preg_match_all("#"."table "."(.*?)"."table"."#i",$html_text,$news);
-        
-        //$html_text_array = explode("<br>", $html_text);
-        $html_text_array = preg_split("/054B9D/", $html_text);
-        
-        unset($html_text_array[0]);
-        
-        $news = array();
-        $pattern_title = "|"."<td valign=\"top\" width=\"100%\"><strong>"."(.+?)"."</strong><br><br>"."|is"; 
-        $pattern_short_text = "|"."</strong><br><br>"."(.+?)"."</td>"."|is"; 
-        $pattern_image = "|"."<a target=\"_blank\" href=\""."(.+?)"."\" onclick='OpenWindow"."|is"; 
-        $pattern_url = "|"."valign=\"bottom\" align=\"right\"><a href=\""."(.+?)"."\" class=\"news\">"."|is"; 
-        $pattern_full_text = "|"."</strong><br><br>"."(.+?)"."</td>"."|is"; 
-        
-        $massiv_alias = array();
-        
-        foreach ($html_text_array as $html_text_array_value) {
-            $form = array();
-            
-            preg_match($pattern_title, $html_text_array_value, $out); 
-            if ($out[1] != "") {
-                $form['title'] = $out[1];
-                
-                $massivchik = explode(" ", $form['title']);
-                switch ($massivchik[0]) {
-                    case "январь":
-                        $month = "01";
-                        break;
-                    case "февраль":
-                        $month = "02";
-                        break;
-                    case "март":
-                        $month = "03";
-                        break;
-                    case "апрель":
-                        $month = "04";
-                        break;
-                    case "май":
-                        $month = "05";
-                        break;
-                    case "июнь":
-                        $month = "06";
-                        break;
-                    case "июль":
-                        $month = "07";
-                        break;
-                    case "август":
-                        $month = "08";
-                        break;
-                    case "сентябрь":
-                        $month = "09";
-                        break;
-                    case "октябрь":
-                        $month = "10";
-                        break;
-                    case "ноябрь":
-                        $month = "11";
-                        break;
-                    case "декабрь":
-                        $month = "12";
-                        break;
-                }
-                
-                $day = rand(1, 28);
-                
-                $form['date'] = strtotime($day . '.' . $month . '.' . $massivchik[1]);
-            }
-            
-            preg_match($pattern_short_text, $html_text_array_value, $out); 
-            if ($out[1] != "") {
-                $form['short_text'] = $out[1];
-            }
-            
-            preg_match($pattern_image, $html_text_array_value, $out); 
-            if ($out[1] != "") {
-                $form['image_url'] = $out[1];
-            }
-            
-            preg_match($pattern_url, $html_text_array_value, $out); 
-            if ($out[1] != "") {
-                $form['url'] = $out[1];
-                
-                // Получаем текст страницы с новостью
-                $text_full_url = file_get_contents($form['url']);
-                $text_full_url = iconv('windows-1251', 'UTF-8', $text_full_url);
-                preg_match($pattern_full_text, $text_full_url, $out); 
-                if ($out[1] != "") {
-                    $form['full_text'] = $out[1];
-                }
-                
-                unset($form['url']);
-            }
-
-            
-            $file = $form['image_url'];
-
-            $uploaded_path = './uploads/'.md5(uniqid(rand(),1)).basename($form['image_url']);
-            if (copy($file, $uploaded_path)) {
-                $files_uploaded['path'] = $uploaded_path;
-                        
-                $data_image = array();
-                $config_insert_db = array(
-                    'name_table' => 'all_files',
-                    'insert_batch' => FALSE,
-                    'insert_id' => TRUE
-                );
-                $data_image['path'] = $files_uploaded['path'];
-                $form['id_image'] = $this->basic_functions_model->insert_db($config_insert_db, $data_image); 
-                unset($data_image);
-            }
-            unset($file, $files_uploaded, $files_uploaded);
-    
-            unset($form['image_url']);    
-
-            $form['alias'] = $this->alias_exist_check_translate_rand('news', $form['title']);
-
-            if (!empty($massiv_alias)) {
-                if (in_array($form['alias'], $massiv_alias)) {
-                    $form['alias'] .= count($massiv_alias);
-                }
-            }
-            
-            $massiv_alias[] = $form['alias'];
-
-            $news[] = $form;
-            
-            
-            $config_insert_db = array(
-                'name_table' => 'news',
-                'insert_batch' => FALSE,
-                'insert_id' => TRUE
-            );
-            $status = $this->basic_functions_model->insert_db($config_insert_db, $form);
-            
-            unset($form);
-        }
-    }
-*/
-    
-/*
 	* Стартовая страница администраторской части
 */
 	public function index() {
@@ -174,6 +22,318 @@ class Administrator extends CI_Controller {
 		$this->load->view('admin_panel/footer');
 	}
 
+/*
+	* Список страниц
+*/
+	public function pages () {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('administrator', 'refresh');
+		}
+
+		$list = $this->basic_functions_model->select(array('table' => 'page_content', 'type' => 'list', 'sort' => 'id', 'type_sort' => 'desc'));
+		if ($list !== NULL) {
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/list_pages', array('lists' => $list));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$this->general_functions->alert('error', 'administrator', 'Ошибка при формировании страницы, попробуйте позднее.');
+		}
+	}
+
+/*
+	* Создание статических страниц
+*/
+	public function create_pages() {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('administrator', 'refresh');
+		}
+
+		$this->form_validation->set_rules($this->rules_model->pages_rules);
+		if ($this->form_validation->run() === FALSE) {
+			$list = $this->basic_functions_model->select(array('table' => 'page_content', 'type' => 'list'));
+			$form = $this->input->post('form');
+			if (!empty($form['alias'])) {
+				$form['alias'] = str_replace(array('\'','"',' ','.',',','*','/','!','?', '—'), '-', $form['alias']);
+				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['alias']);
+			} else {
+				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['title']);
+			}
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/create_pages', array('select_list' => $list, 'form' => $form));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$form = $this->input->post('form');
+			if (!empty($form['alias'])) {
+				$form['alias'] = str_replace(array('\'','"',' ','.',',','*','/','!','?', '—'), '-', $form['alias']);
+				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['alias']);
+			} else {
+				$form['alias'] = $this->alias_exist_check_translate_rand('page_content', $form['title']);
+			}
+			if (is_array($form) && !empty($form)) {
+				$config_insert_db = array(
+					'name_table' => 'page_content',
+					'insert_batch' => FALSE,
+					'insert_id' => TRUE
+				);
+
+				$id_page = $this->basic_functions_model->insert_db($config_insert_db, $form);
+
+				if ($id_page === TRUE || is_numeric($id_page)) {
+					$this->general_functions->alert('success', 'administrator/pages', 'Запись успешно сохранена.');
+				} else {
+					$this->general_functions->alert('error', 'administrator/pages', 'Произошла ошибка, попробуйте позднее.');
+				}
+			}
+		}
+	}
+
+	public function edit_pages($id = NULL) {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('administrator', 'refresh');
+		}
+
+		if (is_numeric($id) && !isset($_POST['form'])) {
+			$form = $this->basic_functions_model->select(array('table' => 'page_content', 'type' => 'list', 'where_field' => 'id', 'where' => $id));
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/create_pages', array('form' => $form[0], 'id' => $id));
+			$this->load->view('admin_panel/footer');
+		} elseif (is_numeric($id) && isset($_POST['form'])) {
+			$this->form_validation->set_rules($this->rules_model->pages_rules);
+			$this->form_validation->set_rules('form[alias]', 'alias', 'trim|required|xss_clean|callback__alias_exist_check[page_content.alias.edit.'.$id.']');
+			if ($this->form_validation->run() === FALSE) {
+				$form = $this->input->post('form');
+
+				$this->load->view('admin_panel/header', array('menu' => $this->menu));
+				$this->load->view('admin_panel/create_pages', array('form' => $form, 'id' => $id));
+				$this->load->view('admin_panel/footer');
+			} else {
+				$form = $this->input->post('form');
+				if (is_array($form) && !empty($form)) {
+					$config_update_db = array(
+						'name_table' => 'page_content',
+						'where_field' => 'id'
+					);
+
+					$status = $this->basic_functions_model->update_db($config_update_db, $form, $id);
+					if ($status === TRUE) {
+						$this->general_functions->alert('success', 'administrator/pages', 'Запись успешно сохранена.');
+					} else {
+						$this->general_functions->alert('error', 'administrator/pages', 'Произошла ошибка, попробуйте позднее.');
+					}
+				}
+			}
+		}
+	}
+
+/*
+    Главное меню
+*/
+	public function main_menu () {
+		$list = $this->basic_functions_model->select(array('table' => 'main_menu', 'type' => 'list', 'sort' => 'position'));
+
+		if ($list !== NULL) {
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/list_main_menu', array('lists' => $list));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$this->general_functions->alert('error', 'administrator', 'Ошибка при формировании страницы, попробуйте позднее.');
+		}
+	}
+
+	/*
+        Создать категорию в главном меню
+    */
+	public function create_main_menu() {
+		$this->form_validation->set_rules($this->rules_model->right_menu);
+		if ($this->form_validation->run() === FALSE) {
+			$form = $this->input->post('form');
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_main_menu', array('form' => $form));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$form = $this->input->post('form');
+
+			if (is_array($form) && !empty($form)) {
+				$config_insert_db = array(
+					'name_table' => 'main_menu',
+					'insert_batch' => FALSE,
+					'insert_id' => TRUE
+				);
+
+				$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
+
+				if ($status === TRUE || is_numeric($status)) {
+					$this->general_functions->alert('success', 'administrator/main_menu', 'Запись успешно сохранена.');
+				} else {
+					$this->general_functions->alert('error', 'administrator/main_menu', 'Произошла ошибка, попробуйте позднее.');
+				}
+			}
+		}
+	}
+
+	/*
+        * Редактирование
+    */
+	public function edit_main_menu($id = NULL) {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('administrator', 'refresh');
+		}
+
+		if (is_numeric($id) && !isset($_POST['form'])) {
+			$form = $this->basic_functions_model->select(array('table' => 'main_menu', 'type' => 'list', 'where_field' => 'id', 'where' => $id));
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_main_menu', array('form' => $form[0], 'id' => $id));
+			$this->load->view('admin_panel/footer');
+		} elseif (is_numeric($id) && isset($_POST['form'])) {
+			$this->form_validation->set_rules($this->rules_model->right_menu);
+			if ($this->form_validation->run() === FALSE) {
+				$form = $this->input->post('form');
+				$this->load->view('admin_panel/header', array('menu' => $this->menu));
+				$this->load->view('admin_panel/menu/create_main_menu', array('form' => $form, 'id' => $id));
+				$this->load->view('admin_panel/footer');
+			} else {
+				$form = $this->input->post('form');
+				if (is_array($form) && !empty($form)) {
+					$config_update_db = array(
+						'name_table' => 'main_menu',
+						'where_field' => 'id'
+					);
+
+					$status = $this->basic_functions_model->update_db($config_update_db, $form, $id);
+					if ($status === TRUE) {
+						$this->general_functions->alert('success', 'administrator/main_menu', 'Запись успешно сохранена.');
+					} else {
+						$this->general_functions->alert('error', 'administrator/main_menu', 'Произошла ошибка, попробуйте позднее.');
+					}
+				}
+			}
+		}
+	}
+
+/*
+    Правое меню
+*/
+	public function right_menu () {
+		$list = $this->basic_functions_model->select_with_images(array('table' => 'right_menu', 'type' => 'list', 'image_field' => 'id_image', 'sort' => 'position'));
+
+		if ($list !== NULL) {
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/list_right_menu', array('lists' => $list));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$this->general_functions->alert('error', 'administrator', 'Ошибка при формировании страницы, попробуйте позднее.');
+		}
+	}
+
+/*
+    Создать категорию в правом меню
+*/
+	public function create_right_menu() {
+		$this->form_validation->set_rules($this->rules_model->right_menu);
+		if (empty($_FILES['file']['name'][0])) {
+			$this->form_validation->set_rules('file[]', 'Изображение', 'required');
+		}
+		if ($this->form_validation->run() === FALSE) {
+			$form = $this->input->post('form');
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_right_menu', array('form' => $form));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$form = $this->input->post('form');
+
+			if (is_array($form) && !empty($form)) {
+				$config_insert_db = array(
+					'name_table' => 'right_menu',
+					'insert_batch' => FALSE,
+					'insert_id' => TRUE
+				);
+
+				if ($_FILES) {
+					$directory = 'images';
+					$file = $this->general_functions->upload_files($_FILES['file'], $directory, 1, 1800, 1800);
+					if ($file !== FALSE){
+						$file_status = $this->basic_functions_model->upload_files_db($file, 1);
+					}
+				}
+				$status = FALSE;
+				if (isset($file_status) && is_array($file_status)) {
+					$form['id_image'] = $file_status[0]['id'];
+					$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
+				}
+				else {
+					$this->general_functions->alert('error', 'administrator/right_menu', 'Призошла ошибка. Не удалось загрузить изображение. Размер файла не должен превышать 3 МБ.');
+				}
+
+				if ($status === TRUE || is_numeric($status)) {
+					$this->general_functions->alert('success', 'administrator/right_menu', 'Запись успешно сохранена.');
+				} else {
+					$this->general_functions->alert('error', 'administrator/right_menu', 'Произошла ошибка, попробуйте позднее.');
+				}
+			}
+		}
+	}
+
+/*
+	* Редактирование
+*/
+	public function edit_right_menu($id = NULL) {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('administrator', 'refresh');
+		}
+
+		if (is_numeric($id) && !isset($_POST['form'])) {
+			$form = $this->basic_functions_model->select(array('table' => 'right_menu', 'type' => 'list', 'where_field' => 'id', 'where' => $id));
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_right_menu', array('form' => $form[0], 'id' => $id));
+			$this->load->view('admin_panel/footer');
+		} elseif (is_numeric($id) && isset($_POST['form'])) {
+			$this->form_validation->set_rules($this->rules_model->right_menu);
+			if ($this->form_validation->run() === FALSE) {
+				$form = $this->input->post('form');
+				$this->load->view('admin_panel/header', array('menu' => $this->menu));
+				$this->load->view('admin_panel/menu/create_right_menu', array('form' => $form, 'id' => $id));
+				$this->load->view('admin_panel/footer');
+			} else {
+				$form = $this->input->post('form');
+				if (is_array($form) && !empty($form)) {
+					$config_update_db = array(
+						'name_table' => 'right_menu',
+						'where_field' => 'id'
+					);
+
+					if ($_FILES) {
+						$directory = 'images';
+						$file = $this->general_functions->upload_files($_FILES['file'], $directory, 1, 1800, 1800);
+
+						if ($file !== FALSE){
+							$list_file = $this->basic_functions_model->select(array('table' => 'right_menu', 'type' => 'list', 'where_field' => 'id', 'where' => $id));
+							if (isset($list_file[0]['id_image'])) {
+								$delete_all[] = $list_file[0]['id_image'];
+								$status_delete = $this->basic_functions_model->upload_files_db($delete_all, 2);
+							}
+
+							$file_status = $this->basic_functions_model->upload_files_db($file, 1);
+							if (isset($file_status) && is_array($file_status)) {
+								$form['id_image'] = $file_status[0]['id'];
+							}
+						}
+					}
+
+					$status = $this->basic_functions_model->update_db($config_update_db, $form, $id);
+					if ($status === TRUE) {
+						$this->general_functions->alert('success', 'administrator/right_menu', 'Запись успешно сохранена.');
+					} else {
+						$this->general_functions->alert('error', 'administrator/right_menu', 'Произошла ошибка, попробуйте позднее.');
+					}
+				}
+			}
+		}
+	}
 
 /*
     Баннеры

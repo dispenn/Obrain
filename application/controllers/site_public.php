@@ -1,262 +1,53 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Site_public extends CI_Controller {
-<<<<<<< HEAD
-    
+
     public function __construct() {
         parent::__construct();
          
         $this->contacts = new stdClass();
 		$this->contacts = $this->basic_functions_model->select(array('table' => 'contact_info', 'type' => 'list', 'where_field' => 'id', 'where' => 1));
-        $this->contacts = $this->contacts[0];  
-        
-        $this->departments = new stdClass();
-		$this->departments = $this->basic_functions_model->select(array('table' => 'departments', 'type' => 'list'));
-    
-        $this->last_news = new stdClass();
-        $this->last_news = $this->public_model->select_last_news(3);
-        if (!empty($this->last_news)) {
-            foreach ($this->last_news as $key => $value) {
-                $this->last_news[$key]['date'] = $this->rdate("d M, Y", $this->last_news[$key]['date']);
-            }
-        }
+        $this->contacts = $this->contacts[0];
+
+        $this->main_menu = new stdClass();
+        $this->main_menu = $this->basic_functions_model->select(array('table' => 'main_menu', 'type' => 'list', 'sort_with_null' => TRUE, 'sort' => 'position', 'type_sort' => 'asc'));
     }
-
-//Вход пользователя
-	function login() {
-		if ($this->ion_auth->logged_in()) {
-			redirect('administrator', 'refresh');
-		}
-
-		$this->data['title'] = "Login";
-
-		//Валидация форм
-		//required - проверка на заполненность формы.
-		$this->form_validation->set_rules('identity', 'Email', 'required');
-		$this->form_validation->set_rules('password', 'Пароль', 'required');
-
-		if ($this->form_validation->run() == true)
-		{
-			//запомнить меня? чекбокс
-			$remember = (bool) $this->input->post('remember');
-			//авторизовать пользователя 
-			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
-			{
-                //redirect them back to the home page
-				$this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('administrator', 'refresh');
-			}
-			else
-			{
-				//Если вход не получился, отправить на авторизацию.
-				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('', 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
-			}
-		}
-		else
-		{
-			//Показать ошибки почему не прошёл авторизацию.
-			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-			$this->data['identity'] = $this->form_validation->set_value('identity');
-                                  
-            $this->load->view('site_public/header');
-            $this->load->view('site_public/menu', $this->data);
-            $this->load->view('site_public/index');
-            $this->load->view('site_public/footer');
-		}
-	}
-
-/*
-*/
-    public function ajax_test_login() {
-        if (!isset($_GET['identity']) || !isset($_GET['password'])) {
-            echo json_encode(array('title' => 'error'));
-            exit;
-        }
-
-        $status = $this->ion_auth_model->validate_login($_GET['identity'], $_GET['password']);
-        
-        if ($status) {          
-            echo json_encode(array('title' => 'success'));
-            exit;
-        }
-        else {
-            echo json_encode(array('title' => 'error'));
-            exit;
-        }
-    }
-/*
-    * Восстановление пароля
-*/
-	public function forgot_password()
-	{
-		$this->form_validation->set_rules('email', 'Электронная почта', 'required');
-		if ($this->form_validation->run() == false)
-		{
-			//setup the input
-			$this->data['email'] = array('name' => 'email',
-				'id' => 'email',
-                'class' => 'form-control',
-			);
-
-			//set any errors and display the form
-			$this->load->view('site_public/header', array('title' => 'Восстановление пароля'));
-			$this->load->view('autorization/forgot_password', $this->data);
-			$this->load->view('site_public/footer', array());
-		}
-		else
-		{
-			$config_tables = $this->config->item('tables', 'ion_auth');
-			$identity = $this->db->where('email', $this->input->post('email'))->limit('1')->get($config_tables['users'])->row();
-
-			$forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
-
-			if ($forgotten)
-			{
-				//if there were no errors
-				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect("login", 'refresh'); 
-			}
-			else
-			{
-				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect("forgot_password", 'refresh');
-			}
-		}
-	}
-
-//Сброс пароля
-	public function reset_password($code = NULL)
-	{
-		if (!$code)
-		{
-			show_404();
-		}
-
-		$user = $this->ion_auth->forgotten_password_check($code);
-
-		if ($user)
-		{
-
-			$this->form_validation->set_rules('new', 'Новый пароль', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
-			$this->form_validation->set_rules('new_confirm', 'Повторите новый пароль', 'required');
-
-			if ($this->form_validation->run() == false)
-			{
-
-				$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-				$this->data['min_password_length'] = $this->config->item('min_password_length', 'ion_auth');
-				$this->data['new_password'] = array(
-					'name' => 'new',
-					'id'   => 'new',
-				    'type' => 'password',
-                    'class' => 'form-control',
-					'pattern' => '^.{'.$this->data['min_password_length'].'}.*$',
-				);
-				$this->data['new_password_confirm'] = array(
-					'name' => 'new_confirm',
-					'id'   => 'new_confirm',
-					'type' => 'password',
-                    'class' => 'form-control',
-					'pattern' => '^.{'.$this->data['min_password_length'].'}.*$',
-				);
-				$this->data['user_id'] = array(
-					'name'  => 'user_id',
-					'id'    => 'user_id',
-					'type'  => 'hidden',
-					'value' => $user->id,
-				);
-				$this->data['csrf'] = $this->_get_csrf_nonce();
-				$this->data['code'] = $code;
-                
-				$this->load->view('site_public/header', array('title' => 'Сброс пароля'));
-				$this->load->view('autorization/reset_password', $this->data);
-				$this->load->view('site_public/footer');
-			}
-			else
-			{
-				if ($this->_valid_csrf_nonce() === FALSE || $user->id != $this->input->post('user_id'))
-				{
-
-					//something fishy might be up
-					$this->ion_auth->clear_forgotten_password_code($code);
-
-					show_error('This form post did not pass our security checks.');
-
-				}
-				else
-				{
-					$identity = $user->{$this->config->item('identity', 'ion_auth')};
-
-					$change = $this->ion_auth->reset_password($identity, $this->input->post('new'));
-
-					if ($change)
-					{
-						$this->session->set_flashdata('message', $this->ion_auth->messages());
-						$this->logout();
-					}
-					else
-					{
-						$this->session->set_flashdata('message', $this->ion_auth->errors());
-						redirect('reset_password/' . $code, 'refresh');
-					}
-				}
-			}
-		}
-		else
-		{
-			//if the code is invalid then send them back to the forgot password page
-			$this->session->set_flashdata('message', $this->ion_auth->errors());
-			redirect("forgot_password", 'refresh');
-		}
-	}
 
     public function index() {
-        
-        $this->form_validation->set_rules('form[email]', 'Email', 'trim|required|xss_clean');
-        if ($this->form_validation->run() === FALSE) {  
-            $banners_list = $this->basic_functions_model->select_with_images(array('table' => 'banners', 'type' => 'list', 'image_field' => 'id_image', 'sort' => 'position'), 1000);
-            
-            $banners = array();
-            foreach($banners_list as $banners_value) {
-                $banners[$banners_value['position_row']][] = $banners_value;
-            }
-            
-            $this->load->view('site_public/header');
-            $this->load->view('site_public/menu');
-            $this->load->view('site_public/index', array('banners' => $banners));
-            $this->load->view('site_public/footer');
-        } else {
-            $form = $this->input->post('form');
-			if (is_array($form) && !empty($form)) {         
-				$config_insert_db = array(
-					'name_table' => 'forms',
-					'insert_batch' => FALSE,
-					'insert_id' => TRUE
-				 );
-                 
-                $form['category'] = 1;
-				$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
-                
-                $this->email->from('no-reply@solfi.at-develop.ru', 'Solfi');
-                $this->email->to($this->contacts['email']); 
-                
-                $this->email->subject('Оформлена новая подписка');
-                $text_message = "\n\nEmail: " . $form['email'];
-                
-                $this->email->message($text_message);	
-                $this->email->send();
-                
-				if ($status === TRUE || is_numeric($status)) {
-					$this->general_functions->alert('success', '', 'Подписка успешно оформлена.');
-				} else {
-					$this->general_functions->alert('error', '', 'Произошла ошибка.');	
-				}
-			}
-        }
+        $right_menu = $this->basic_functions_model->select_with_images(array('table' => 'right_menu', 'type' => 'list', 'image_field' => 'id_image', 'sort_with_null' => TRUE, 'sort' => 'position', 'type_sort' => 'asc'));
+
+        $this->load->view('site_public/header');
+        $this->load->view('site_public/menu');
+        $this->load->view('site_public/index', array('right_menu' => $right_menu));
+        $this->load->view('site_public/footer');
 	}
+
+    public function reviews () {
+        $this->load->view('site_public/header');
+        $this->load->view('site_public/menu');
+        $this->load->view('site_public/reviews', array());
+        $this->load->view('site_public/footer');
+    }
+
+/*
+    * Статические страницы
+*/
+    public function page($alias = NULL) {
+        $pages = $this->basic_functions_model->select(array('table' => 'page_content', 'type' => 'list', 'where_field' => 'alias', 'where' => $alias));
+        if ($alias !== NULL && !empty($pages) && $pages[0]['access'] != 0)
+        {
+            $breadcrumbs[0] = array('title' => $pages[0]['title'], 'link' => '');
+
+            $this->load->view('site_public/header', array());
+            $this->load->view('site_public/menu');
+            $this->load->view('site_public/static_page', array('page_info' => $pages[0]));
+            $this->load->view('site_public/footer', array());
+        }
+        else
+        {
+            show_404();
+        }
+    }
 
     public function contacts() {
         $this->form_validation->set_rules($this->rules_model->question_rules);
@@ -273,7 +64,7 @@ class Site_public extends CI_Controller {
 					'insert_batch' => FALSE,
 					'insert_id' => TRUE
 				 );
-                 
+
                 $form['category'] = 2;
 				$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
                 
@@ -282,12 +73,6 @@ class Site_public extends CI_Controller {
                 
                 $this->email->subject('Отправлен новый вопрос');
                 $text_message = "\n\nФИО: " . $form['name'];
-                if ($form['company']) {
-                    $text_message .= "\nКомпания: " . $form['company'];
-                }
-                if ($form['phone']) {
-                    $text_message .= "\nТелефон: " . $form['phone'];
-                }
                 if ($form['email']) {
                     $text_message .= "\nE-mail: " . $form['email'];
                 }
@@ -652,11 +437,4 @@ class Site_public extends CI_Controller {
     		else return date(str_replace('M',$MonthNames[date('n',$time)-1],$param), $time);
     }
 
-    }
-=======
-
-    public function __construct() {
-        parent::__construct();
-    }
 }
->>>>>>> master
