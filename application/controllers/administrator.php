@@ -127,6 +127,215 @@ class Administrator extends CI_Controller {
 	}
 
 /*
+    Главное меню
+*/
+	public function main_menu () {
+		$list = $this->basic_functions_model->select(array('table' => 'main_menu', 'type' => 'list', 'sort' => 'position'));
+
+		if ($list !== NULL) {
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/list_main_menu', array('lists' => $list));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$this->general_functions->alert('error', 'administrator', 'Ошибка при формировании страницы, попробуйте позднее.');
+		}
+	}
+
+	/*
+        Создать категорию в главном меню
+    */
+	public function create_main_menu() {
+		$this->form_validation->set_rules($this->rules_model->right_menu);
+		if ($this->form_validation->run() === FALSE) {
+			$form = $this->input->post('form');
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_main_menu', array('form' => $form));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$form = $this->input->post('form');
+
+			if (is_array($form) && !empty($form)) {
+				$config_insert_db = array(
+					'name_table' => 'main_menu',
+					'insert_batch' => FALSE,
+					'insert_id' => TRUE
+				);
+
+				$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
+
+				if ($status === TRUE || is_numeric($status)) {
+					$this->general_functions->alert('success', 'administrator/main_menu', 'Запись успешно сохранена.');
+				} else {
+					$this->general_functions->alert('error', 'administrator/main_menu', 'Произошла ошибка, попробуйте позднее.');
+				}
+			}
+		}
+	}
+
+	/*
+        * Редактирование
+    */
+	public function edit_main_menu($id = NULL) {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('administrator', 'refresh');
+		}
+
+		if (is_numeric($id) && !isset($_POST['form'])) {
+			$form = $this->basic_functions_model->select(array('table' => 'main_menu', 'type' => 'list', 'where_field' => 'id', 'where' => $id));
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_main_menu', array('form' => $form[0], 'id' => $id));
+			$this->load->view('admin_panel/footer');
+		} elseif (is_numeric($id) && isset($_POST['form'])) {
+			$this->form_validation->set_rules($this->rules_model->right_menu);
+			if ($this->form_validation->run() === FALSE) {
+				$form = $this->input->post('form');
+				$this->load->view('admin_panel/header', array('menu' => $this->menu));
+				$this->load->view('admin_panel/menu/create_main_menu', array('form' => $form, 'id' => $id));
+				$this->load->view('admin_panel/footer');
+			} else {
+				$form = $this->input->post('form');
+				if (is_array($form) && !empty($form)) {
+					$config_update_db = array(
+						'name_table' => 'main_menu',
+						'where_field' => 'id'
+					);
+
+					$status = $this->basic_functions_model->update_db($config_update_db, $form, $id);
+					if ($status === TRUE) {
+						$this->general_functions->alert('success', 'administrator/main_menu', 'Запись успешно сохранена.');
+					} else {
+						$this->general_functions->alert('error', 'administrator/main_menu', 'Произошла ошибка, попробуйте позднее.');
+					}
+				}
+			}
+		}
+	}
+
+/*
+    Правое меню
+*/
+	public function right_menu () {
+		$list = $this->basic_functions_model->select_with_images(array('table' => 'right_menu', 'type' => 'list', 'image_field' => 'id_image', 'sort' => 'position'));
+
+		if ($list !== NULL) {
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/list_right_menu', array('lists' => $list));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$this->general_functions->alert('error', 'administrator', 'Ошибка при формировании страницы, попробуйте позднее.');
+		}
+	}
+
+/*
+    Создать категорию в правом меню
+*/
+	public function create_right_menu() {
+		$this->form_validation->set_rules($this->rules_model->right_menu);
+		if (empty($_FILES['file']['name'][0])) {
+			$this->form_validation->set_rules('file[]', 'Изображение', 'required');
+		}
+		if ($this->form_validation->run() === FALSE) {
+			$form = $this->input->post('form');
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_right_menu', array('form' => $form));
+			$this->load->view('admin_panel/footer');
+		} else {
+			$form = $this->input->post('form');
+
+			if (is_array($form) && !empty($form)) {
+				$config_insert_db = array(
+					'name_table' => 'right_menu',
+					'insert_batch' => FALSE,
+					'insert_id' => TRUE
+				);
+
+				if ($_FILES) {
+					$directory = 'images';
+					$file = $this->general_functions->upload_files($_FILES['file'], $directory, 1, 1800, 1800);
+					if ($file !== FALSE){
+						$file_status = $this->basic_functions_model->upload_files_db($file, 1);
+					}
+				}
+				$status = FALSE;
+				if (isset($file_status) && is_array($file_status)) {
+					$form['id_image'] = $file_status[0]['id'];
+					$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
+				}
+				else {
+					$this->general_functions->alert('error', 'administrator/right_menu', 'Призошла ошибка. Не удалось загрузить изображение. Размер файла не должен превышать 3 МБ.');
+				}
+
+				if ($status === TRUE || is_numeric($status)) {
+					$this->general_functions->alert('success', 'administrator/right_menu', 'Запись успешно сохранена.');
+				} else {
+					$this->general_functions->alert('error', 'administrator/right_menu', 'Произошла ошибка, попробуйте позднее.');
+				}
+			}
+		}
+	}
+
+/*
+	* Редактирование
+*/
+	public function edit_right_menu($id = NULL) {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('administrator', 'refresh');
+		}
+
+		if (is_numeric($id) && !isset($_POST['form'])) {
+			$form = $this->basic_functions_model->select(array('table' => 'right_menu', 'type' => 'list', 'where_field' => 'id', 'where' => $id));
+
+			$this->load->view('admin_panel/header', array('menu' => $this->menu));
+			$this->load->view('admin_panel/menu/create_right_menu', array('form' => $form[0], 'id' => $id));
+			$this->load->view('admin_panel/footer');
+		} elseif (is_numeric($id) && isset($_POST['form'])) {
+			$this->form_validation->set_rules($this->rules_model->right_menu);
+			if ($this->form_validation->run() === FALSE) {
+				$form = $this->input->post('form');
+				$this->load->view('admin_panel/header', array('menu' => $this->menu));
+				$this->load->view('admin_panel/menu/create_right_menu', array('form' => $form, 'id' => $id));
+				$this->load->view('admin_panel/footer');
+			} else {
+				$form = $this->input->post('form');
+				if (is_array($form) && !empty($form)) {
+					$config_update_db = array(
+						'name_table' => 'right_menu',
+						'where_field' => 'id'
+					);
+
+					if ($_FILES) {
+						$directory = 'images';
+						$file = $this->general_functions->upload_files($_FILES['file'], $directory, 1, 1800, 1800);
+
+						if ($file !== FALSE){
+							$list_file = $this->basic_functions_model->select(array('table' => 'right_menu', 'type' => 'list', 'where_field' => 'id', 'where' => $id));
+							if (isset($list_file[0]['id_image'])) {
+								$delete_all[] = $list_file[0]['id_image'];
+								$status_delete = $this->basic_functions_model->upload_files_db($delete_all, 2);
+							}
+
+							$file_status = $this->basic_functions_model->upload_files_db($file, 1);
+							if (isset($file_status) && is_array($file_status)) {
+								$form['id_image'] = $file_status[0]['id'];
+							}
+						}
+					}
+
+					$status = $this->basic_functions_model->update_db($config_update_db, $form, $id);
+					if ($status === TRUE) {
+						$this->general_functions->alert('success', 'administrator/right_menu', 'Запись успешно сохранена.');
+					} else {
+						$this->general_functions->alert('error', 'administrator/right_menu', 'Произошла ошибка, попробуйте позднее.');
+					}
+				}
+			}
+		}
+	}
+
+/*
     Баннеры
 */
     public function banners () {

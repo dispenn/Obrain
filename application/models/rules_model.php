@@ -17,6 +17,29 @@ class Rules_model extends CI_Model {
 			)
 	);
 
+	public $right_menu = array(
+		array(
+			'field'   => 'form[title]',
+			'label'   => 'Название',
+			'rules'   => 'trim|required|max_length[255]|xss_clean'
+		),
+		array(
+			'field'   => 'form[link]',
+			'label'   => 'Ссылка',
+			'rules'   => 'trim|max_length[255]|xss_clean'
+		),
+		array(
+			'field'   => 'form[class]',
+			'label'   => 'Class',
+			'rules'   => 'trim|required|max_length[255]|xss_clean'
+		),
+		array(
+			'field'   => 'form[position]',
+			'label'   => 'Позиция',
+			'rules'   => 'trim|max_length[255]|xss_clean'
+		)
+	);
+
 	public $pages_rules = array(
 		array(
 			'field'   => 'form[title]',
