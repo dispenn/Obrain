@@ -23,12 +23,6 @@
                   <input class="form-control" type="text" name="form[email]" value="<?php if(isset($form['email'])) {echo $form['email'];} else {echo set_value('form[email]');}?>"/>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">2Gis скрипт</label>
-                <div class="col-sm-8">
-                  <textarea name="form[script_map]"  id="script_map" cols="60" rows="5"><?php if(isset($form['script_map'])) {echo $form['script_map'];} else {echo set_value('form[script_map]');}?></textarea>
-                </div>
-              </div>
               <hr />
               <div class="row">
                 <label class="col-sm-2 control-label">Текст</label>
