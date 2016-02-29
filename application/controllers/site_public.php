@@ -1,8 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Site_public extends CI_Controller {
-<<<<<<< HEAD
-    
+
     public function __construct() {
         parent::__construct();
          
@@ -652,11 +651,4 @@ class Site_public extends CI_Controller {
     		else return date(str_replace('M',$MonthNames[date('n',$time)-1],$param), $time);
     }
 
-    }
-=======
-
-    public function __construct() {
-        parent::__construct();
-    }
 }
->>>>>>> master
