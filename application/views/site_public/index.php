@@ -1,36 +1,172 @@
-       <div class="container">
-       <div class="col-md-12">
-				<?php if ($error = $this->session->flashdata('error')):?>
-				<?php echo alert_message($error, 'danger');?>
-			<?php elseif($success = $this->session->flashdata('success')):?>
-			<?php echo alert_message($success, 'success');?>
-		<?php elseif($success = $this->session->flashdata('info')):?>
-		<?php echo alert_message($info, 'info');?>
-	<?php elseif(validation_errors()):?>
-	<?php echo alert_message(validation_errors(), 'danger');?>
-<?php endif;?>
-</div></div>
-       
-        <div class="top-area">
-            <?php if(isset($banners) && !empty($banners)): ?>
-            <?php foreach ($banners as $key => $banners_list): ?>
-            <div class="owl-carousel owl-slider" id="owl-carousel-slider<?php if ($key != 1) echo $key; ?>" data-inner-pagination="true" data-white-pagination="true" data-nav="true">
-                <?php foreach ($banners_list as $banner): ?>
-                    <div>
-                        <div class="bg-holder">
-                            <?php if ($banner['link'] != ""): ?>
-                                <a href="<?php echo $banner['link']; ?>"><img src="<?php echo base_url() . substr($banner['path'], 1);?>"  style="width: 100%;" /></a>
-                            <?php else: ?>
-                                <img src="<?php echo base_url() . substr($banner['path'], 1);?>" style="width: 100%;" />
-                            <?php endif; ?>
+<section class="free_lesson mt25">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wrapp_lesson">
+                    <div class="col-md-6 no-padding">
+                        <img src="<?php echo '/themes/site_public/'; ?>img/free_lesson.jpg" width="100%" alt="">
+                    </div>
+                    <div class="col-md-6 no-padding">
+                        <div class="info">
+                            <h2 class="fz36 mb25">Бесплатный пробный урок</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, officia! Consequuntur eos, molestiae natus dignissimos perferendis tempora quas iusto sit, eaque quia doloremque explicabo distinctio enim cumque, at vero debitis.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, officia! Consequuntur eos, molestiae natus dignissimos perferendis tempora quas iusto sit, eaque quia doloremque explicabo distinctio enim cumque, at vero debitis.</p>
+                            <a href="record_training.html" class="btn btn-lg btn-blue mt25">Записаться на пробный урок</a>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                </div>
             </div>
-            <?php endforeach; ?>
-            <?php endif; ?>
-
         </div>
+    </div>
+</section>
 
+<div class="container">
 
+    <div class="row">
+        <div class="col-md-8 col-sm-8 no-padding">
+            <main class="main clearfix">
+                <div class="col-md-12">
 
+                    <div class="page_body">
+                        <h1>Obrain - Центр развития интеллекта</h1>
+
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore consectetur laboriosam deleniti autem voluptatibus vel, aperiam, vero, inventore qui, voluptatem eaque voluptates repellat obcaecati? Nemo dolore vero ab blanditiis provident.</p>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+        <div class="col-md-4 col-sm-4 no-padding">
+            <aside class="sidebar clearfix">
+                <div class="col-md-12">
+
+                    <ul class="sidebar_menu">
+
+                        <li class="one">
+                            <a href="mental_arithmetic.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Ментальная арифметика</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/ic_1.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="two">
+                            <a href="speed_reading.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Скорочтение</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/speed.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="three">
+                            <a href="english.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Английский язык</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/english.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="four">
+                            <a href="prodlenka.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Продленка</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/prodlenka.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="five">
+                            <a href="learning_module.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Учебный модуль</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/lessons.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="six">
+                            <a href="faq.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Вопросы и ответы</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/faq.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="seven">
+                            <a href="record_training.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Запись на пробное занятие</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/record.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="eight">
+                            <a href="actions.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Акции</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/actions.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nine">
+                            <a href="news.html">
+                                <div class="wrapp">
+                                    <div class="info">
+                                        <span>Новости</span>
+                                    </div>
+                                    <div class="pictures">
+                                        <img src="<?php echo '/themes/site_public/'; ?>img/icons/news.png" alt="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </aside>
+        </div>
+    </div>
+
+</div>

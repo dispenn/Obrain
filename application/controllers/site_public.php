@@ -213,48 +213,10 @@ class Site_public extends CI_Controller {
 	}
 
     public function index() {
-        
-        $this->form_validation->set_rules('form[email]', 'Email', 'trim|required|xss_clean');
-        if ($this->form_validation->run() === FALSE) {  
-            $banners_list = $this->basic_functions_model->select_with_images(array('table' => 'banners', 'type' => 'list', 'image_field' => 'id_image', 'sort' => 'position'), 1000);
-            
-            $banners = array();
-            foreach($banners_list as $banners_value) {
-                $banners[$banners_value['position_row']][] = $banners_value;
-            }
-            
-            $this->load->view('site_public/header');
-            $this->load->view('site_public/menu');
-            $this->load->view('site_public/index', array('banners' => $banners));
-            $this->load->view('site_public/footer');
-        } else {
-            $form = $this->input->post('form');
-			if (is_array($form) && !empty($form)) {         
-				$config_insert_db = array(
-					'name_table' => 'forms',
-					'insert_batch' => FALSE,
-					'insert_id' => TRUE
-				 );
-                 
-                $form['category'] = 1;
-				$status = $this->basic_functions_model->insert_db($config_insert_db, $form);
-                
-                $this->email->from('no-reply@solfi.at-develop.ru', 'Solfi');
-                $this->email->to($this->contacts['email']); 
-                
-                $this->email->subject('Оформлена новая подписка');
-                $text_message = "\n\nEmail: " . $form['email'];
-                
-                $this->email->message($text_message);	
-                $this->email->send();
-                
-				if ($status === TRUE || is_numeric($status)) {
-					$this->general_functions->alert('success', '', 'Подписка успешно оформлена.');
-				} else {
-					$this->general_functions->alert('error', '', 'Произошла ошибка.');	
-				}
-			}
-        }
+        $this->load->view('site_public/header');
+        $this->load->view('site_public/menu');
+        $this->load->view('site_public/index', array());
+        $this->load->view('site_public/footer');
 	}
 
     public function contacts() {
